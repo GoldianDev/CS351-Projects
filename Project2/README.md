@@ -20,4 +20,21 @@
 
 ![graph](CS351_project2_graph.png)
 
-At a certain number of threads used, the maximum speed-up seemingly plateaus off a bit. Assuming that I'm meant to answer this problem not knowing what Amdahl's Law is: the computer only has so much that it actually needs to process. At some point, in this case seemingly around 16 threads, adding more threads gives diminishing returns, as the extra data is not actually being processed faster anymore. The best analogy I can think of is that it's a bit like a reservoir, where at some point, overfilling it will simply spill out water. If you have an input of four items, then more than four threads is quote on quote "overfilling." 
+\textbf{Question 1:}
+At a certain number of threads used, the maximum speed-up seemingly plateaus off a bit. Assuming that I'm meant to answer this problem not knowing what Amdahl's Law is: the computer only has so much that it actually needs to process. At some point, in this case seemingly around 16 threads, adding more threads gives diminishing returns, as the extra data is not actually being processed faster anymore. The best analogy I can think of is that it's a bit like a reservoir, where at some point, overfilling it will simply spill out water. If you have an input of four items, then more than four threads is quote on quote "overfilling."
+
+\textbf{Question 2:}
+Unless you are explicitly trying to make the computer get "perfect scaling," in practice the program will almost certainly never run at perfectly the same speed.
+
+\textbf{Question 3:}
+Running timed with 16 cores, I got:
+main program 0.012088067 s
+results output 4.69e-07 s
+main program 1.907519767 s
+indicating that
+$$ serial = \frac{0.012}{1.907} = 0.006 $$
+and thus
+$$ speedup = \frac{1}{1 - 0.994 + \frac{0.994}{16}} = 14.679 $$
+
+\textbf{Question 4:}
+I got a slope equation of 0.75x + 0.5, however this is absolutely an approximation... my results didn't look very linear. Based on the graph above, this trend absolutely does not continue, for the reason discussed in question 1. Our thread count can get larger than the amount of data that actually needs to be processed, and if this happens, then the extra threads are not actually going to be taking in data and speeding up the runtime.
