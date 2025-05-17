@@ -28,12 +28,19 @@ Unless you are explicitly trying to make the computer get "perfect scaling," in 
 
 **Question 3:**
 Running timed with 16 cores, I got:
-main program 0.012088067 s
-results output 4.69e-07 s
-main program 1.907519767 s
+
+- main program 0.012088067 s
+
+- results output 4.69e-07 s
+
+- main program 1.907519767 s
+  
 indicating that
+
 $$ serial = \frac{0.012}{1.907} = 0.006 $$
+
 and thus
+
 $$ speedup = \frac{1}{1 - 0.994 + \frac{0.994}{16}} = 14.679 $$
 
 **Question 4:**
