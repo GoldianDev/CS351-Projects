@@ -4,22 +4,43 @@
         <script src="initShaders.js"></script>
 
         <script id="vertex-shader" type="x-shader/x-vertex">
+	    uniform float N, t;
+	    out float radius;
             void main() {
+		if (gl_VertexID == 0 || gl_VertexID == int(N)) {
+		   gl_Position = vec4(0.0, 0.0, 0.0, 1.0);
+		   return;
+		}
+		//if (gl_VertexID == 1) {
+		//   gl_Position = vec4(1.0, 1.0, 1.0, 1.0);
+		//   return;	
+		//}
+
+		//if (gl_VertexID == 2) {
+		//   gl_Position = vec4(0.0, 1.0, 1.0, 1.0);
+		//   return;	
+		//}
+		
 		float vid = float(gl_VertexID);
 		
 		const float Pi = 3.14159265358979;
-		float angle = vid * 2.0 * Pi / 3.0;
-		vec2 v = vec2(cos(angle), sin(angle));
-		
+		radius = gl_VertexID % 2 == 0 ? 0.45 : 1.0;
+		float angle = vid * 2. * Pi / (N - 2.) + (sin(t / 3.) * 5.);
+		vec2 v = vec2(cos(angle), sin(angle)) * radius;	
 		gl_Position = vec4(v, 0.0, 1);
             }
         </script>
         
         <script id="fragment-shader" type="x-shader/x-fragment">
-
+	    
+	    uniform float t;
+	    in float radius;
 	    out vec4 fColor;
+	    
             void main() {
-                fColor = vec4(0.0, 1.0, 1.0, 1.0);
+		vec4 blue = vec4(0.4, (sin(t) + 4.7) / 5., 1, 1.0);
+		vec4 purple = vec4((sin(t)+1.)/4., 0.0, 1.0, 1.0);
+                fColor = mix(blue, purple, radius);
             }
         </script>
 
@@ -32,9 +53,8 @@
 
                 var program = initShaders(gl, "vertex-shader", "fragment-shader");
                 
-                // These are lines that we'll need a bit later.
-                // var uN = gl.getUniformLocation(program, "N");
-                // var uTime = gl.getUniformLocation(program, "t");
+                var uN = gl.getUniformLocation(program, "N");
+                var uTime = gl.getUniformLocation(program, "t");
 
                 var t = 0.0;
 
@@ -48,10 +68,10 @@
 
                     // Other code we'll need later, in combination with the
                     //   code above marked for later use.
-                    // gl.uniform1f(uN, N);
-                    // gl.uniform1f(uTime, t);
+                    gl.uniform1f(uN, N);
+                    gl.uniform1f(uTime, t);
 
-                    gl.drawArrays(gl.LINE_LOOP, 0, 3);
+                    gl.drawArrays(gl.TRIANGLE_FAN, 0, N);
 
                     requestAnimationFrame(render);
                 };
